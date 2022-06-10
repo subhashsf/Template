@@ -2,10 +2,10 @@ let quotes= [] ;
 let nextbtn = document.getElementById('new-quote');
 let quotetextid = document.getElementById('quote');
 let authorid = document.getElementById('author');
-let twitterbtn = document.getElementsById('twitter-btn');
-
+let twitterbtn = document.getElementById('twitter-btn');
+let index;
 function newquote(){
-    let index = Math.floor(Math.random(Number)*quotes.length);
+    index = Math.floor(Math.random(Number)*quotes.length);
     let text = quotes[index].text;
     let author =quotes[index].author;
     // console.log(index,text,author);
@@ -13,6 +13,14 @@ function newquote(){
     authorid.innerHTML=author;
 }
 nextbtn.addEventListener("click", newquote);
+
+function tweet (){
+    let text = quotes[index].text;
+    let author =quotes[index].author;
+    const twitterurl= `https://twitter.com/intent/tweet?text=${text} - ${author}` ;
+    window.open(twitterurl,'_blank');
+}
+twitterbtn.addEventListener('click',tweet);
 
 async function getquotes(){
     const Apiurl = "https://type.fit/api/quotes";
