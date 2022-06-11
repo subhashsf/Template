@@ -110,9 +110,21 @@ function updateProgressBar(e){
         audioDuration.textContent = `${durationMin}:${durationSec}`;
         curTime.textContent= `${curTimeMin}:${curTimeSec}`;
     }
-
-
 }
+
+function setProgressBar(e){
+    const width = this.clientWidth;
+    const clicX = e.offsetX;
+    const {duration}= music;
+    // console.log(clicX/width);
+    // console.log(clicX/width*duration);
+    let newcurtime = clicX/width*duration;
+    music.currentTime = newcurtime;
+    
+}
+
 prevBtn.addEventListener('click',prevSong);
 nextBtn.addEventListener('click',nextSong);
+music.addEventListener('ended',nextSong);
 music.addEventListener('timeupdate',updateProgressBar);
+progressContainer.addEventListener('click',setProgressBar);
