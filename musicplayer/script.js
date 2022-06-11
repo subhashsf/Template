@@ -2,6 +2,10 @@ const image=document.querySelector('img');
 const title=document.getElementById('title');
 const artist=document.getElementById('artist');
 const music =document.querySelector('audio');
+const curTime = document.getElementById('current-time');
+const audioDuration = document.getElementById('duration');
+const progressContainer = document.getElementById('progress-container');
+const progress = document.getElementById('progress');
 const prevBtn =document.getElementById('prev');
 const playBtn =document.getElementById('play');
 const nextBtn =document.getElementById('next');
@@ -60,18 +64,19 @@ function loadsong(song){
 }
 
 function nextSong(){
-    console.log(songIndex);
+    
+    // console.log(songIndex);
     if(songIndex==3){
-        songIndex=0;;
+        songIndex=0;
         loadsong(songs[songIndex]);
     }
     else{
         songIndex=songIndex+1;
         loadsong(songs[songIndex]);
     }
+    playSong();
 }
 function prevSong(){
-    console.log(songIndex);
     if(songIndex==0){
         songIndex=3;;
         loadsong(songs[songIndex]);
@@ -80,9 +85,34 @@ function prevSong(){
         songIndex=songIndex-1;
         loadsong(songs[songIndex]);
     }
+    playSong();
 }
 
+function updateProgressBar(e){
+    let {currentTime,duration} = e.srcElement;
+    // audioDuration.textContent = duration;
+    // curTime.textContent= currentTime;
+    let progressPer = currentTime/duration * 100;
+    progress.style.width=`${progressPer}%`;
+    // let curTimeValue = Math.floor(currentTime);
+    // let durationValue =Math.floor(duration);
+    let curTimeMin = Math.floor(currentTime/60);
+    let durationMin = Math.floor(duration/60);
+    let curTimeSec = Math.floor(currentTime%60);
+    let durationSec = Math.floor(duration%60);
+    if(curTimeSec<10){
+        curTimeSec=`0${curTimeSec}`;
+    }
+    if(durationSec<10){
+        durationSec =`0${durationSec}`;
+    }
+    if(durationSec){
+        audioDuration.textContent = `${durationMin}:${durationSec}`;
+        curTime.textContent= `${curTimeMin}:${curTimeSec}`;
+    }
+
+
+}
 prevBtn.addEventListener('click',prevSong);
 nextBtn.addEventListener('click',nextSong);
-
-
+music.addEventListener('timeupdate',updateProgressBar);
