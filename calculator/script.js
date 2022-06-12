@@ -17,6 +17,16 @@ function displaynum(disvar){
         caldisplay.textContent =caldisplay.textContent== 0 ?  disvar.value : caldisplay.textContent+disvar.value;
     }
 }
+
+const calculate = {
+    '/' : (firstNumber,secondNumber) => firstNumber / secondNumber,
+    '+' : (firstNumber,secondNumber) => firstNumber + secondNumber ,
+    '*' : (firstNumber,secondNumber) => firstNumber * secondNumber ,
+    '-' : (firstNumber,secondNumber) => firstNumber - secondNumber ,
+    '=' : (firstNumber,secondNumber) => secondNumber ,
+};
+
+
 function displaydecimal(disvar){
 
     if(awaitingNextValue) return;
@@ -32,16 +42,25 @@ function displaydecimal(disvar){
 
 function useOperator(operator){
     const currentValue =Number(caldisplay.textContent);
-    
+
+    if(operatorValue&&awaitingNextValue) {
+        operatorValue=operator.value;
+        return;
+    }
     if(!firstValue){
         firstValue=currentValue;
+        
     }
     else{
-        console.log(firstValue,operatorValue,currentValue);
+        // console.log(firstValue,operatorValue,currentValue);
+        const calculation =calculate[operatorValue](firstValue,currentValue);
+        firstValue=calculation;
+        caldisplay.textContent=calculation;
+        // console.log(calculation);
+        // console.log(firstValue,operatorValue,currentValue);
     }
     awaitingNextValue = true;
     operatorValue=operator.value;
-    console.log(firstValue,operatorValue);
 }
 
 buttons.forEach((eachBtn)=>{
@@ -66,7 +85,4 @@ function resetAll(){
 }
 clearbtn.addEventListener('click',resetAll);
 
-// function calculate(){
-//     console.log("dfasd");
-// }
-// equalbtn.addEventListener('click',calculate);
+
